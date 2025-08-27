@@ -37,7 +37,6 @@ fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     //println!("Logs from your program will appear here!");
 
-    // Uncomment this block to pass the first stage
     match args.command {
         Command::Init => {
             fs::create_dir(".git").unwrap();
@@ -78,23 +77,19 @@ fn main() -> anyhow::Result<()> {
                 _=> anyhow::bail!("do not yet know how to print a '{kind}'"),     
             };
             let size = size
-                .parse::<usize>()
+                .parse::<u64>()
                 .context(".git/objects file header has invalid size: {size}")?;
-            buf.clear();
-            buf.resize(size, 0);
-            z.read_exact(&mut buf [..])
-                .context("read true contents of .git/objects file")?;
-            let n = z
-                .read(&mut [0])
-                .context("validate EOF in .git/object file")?;
-            anyhow::ensure!(n == 0, ".git/objects file had {n} trailing bytes");
-            let mut stdout = std::io::stdout();
-            let mut stdout = stdout.lock();
-
-            match kind{
-                Kind::Blob => stdout
-                    .write_all(&buf)
-                    .context("write objects contents to stdout")?,
+            // NOTE: this won't error if the decomprtessed file is too long but won't spam stdout
+            // making it not vulnarable to zipbombs.
+            let mut z = z.take(size);
+            match kind {
+                Kind::Blob => {
+                    let stdout = std::io::stdout();
+                    let mut stdout = stdout.lock();
+                    let n = std::io::copy(&mut z, &mut stdout)
+                        .context("write .git/objects file to stdout")?;
+                    anyhow::ensure!(n == size, ".git/objects file was not the expected size (expected: {size}, actual: {n})");
+                }
             }
         }
     }
