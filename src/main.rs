@@ -88,7 +88,7 @@ fn main() -> anyhow::Result<()> {
                 .read(&mut [0])
                 .context("validate EOF in .git/object file")?;
             anyhow::ensure!(n == 0, ".git/objects file had {n} trailing bytes");
-            let stdout = std::io::stdout();
+            let mut stdout = std::io::stdout();
             let mut stdout = stdout.lock();
 
             match kind{
