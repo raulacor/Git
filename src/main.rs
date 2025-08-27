@@ -35,7 +35,7 @@ enum Kind {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    println!("Logs from your program will appear here!");
+    //println!("Logs from your program will appear here!");
 
     // Uncomment this block to pass the first stage
     match args.command {
