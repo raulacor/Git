@@ -1,11 +1,11 @@
+use anyhow::Context;
 use clap::{Parser, Subcommand};
+use flate2::read::ZlibDecoder;
+use std::ffi::CStr;
 use std::fs;
 use std::io;
 use std::io::BufReader;
-use std::ffi::CStr;
-use anyhow::Context;
 use std::io::prelude::*;
-use flate2::read::ZlibDecoder;
 
 
 //Simple program to greet a person
