@@ -7,8 +7,8 @@ use std::fs;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[command(Subcommand)]
-    command: Command
+    #[command(subcommand)]
+    command: Command,
 }
 
 /// Doc comment
