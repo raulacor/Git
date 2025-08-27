@@ -1,4 +1,5 @@
-use clap::{Subcommand, Parser}
+use clap::{Subcommand, Parser};
+use std::env;
 use std::fs;
 
 
@@ -8,18 +9,20 @@ use std::fs;
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    #[command(Subcomand)]
+    #[command(Subcommand)]
     command: Command
 }
 
 /// Doc comment
-#[derive(Debug, Subcomand)]
+#[derive(Debug, Subcommand)]
 enum command {
+    /// Doc comment
     Init,
 }
 
 fn main() {
-    eprintln!("Logs from your program will appear here!");
+    let args = Args::parse();
+    println!("Logs from your program will appear here!");
 
     // Uncomment this block to pass the first stage
     match on Args.command {
