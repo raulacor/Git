@@ -1,16 +1,6 @@
-use anyhow::Context;
 use clap::{Parser, Subcommand};
-use flate2::read::ZlibDecoder;
-use flate2::write::ZlibEncoder;
-use flate2::Compression;
-use sha1::{Sha1};
-use std::ffi::CStr; 
 use std::fs;
-use std::io;
-use std::io::BufReader;
-use std::io::prelude::*;
 use std::path::PathBuf;
-use std::path::Path;
 
 pub mod commands;
 

@@ -3,11 +3,8 @@ use flate2::write::ZlibEncoder;
 use flate2::Compression;
 use sha1::{Digest, Sha1};
 use std::fs;
-use std::io::BufReader;
 use std::io::prelude::*;
-use std::path::PathBuf;
 use std::path::Path;
-use std::ptr::hash;
 
 pub (crate) fn invoke(write: bool, file: &Path) -> anyhow::Result<()> {    
     fn write_blob<W>(file: &Path, writer: W)  -> anyhow::Result<String> 
