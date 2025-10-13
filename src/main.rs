@@ -28,13 +28,15 @@ enum Command {
         write: bool,
 
         file: PathBuf,
-    }
+    },
+    LsTree {
+        #[clap(long)]
+        name_only: bool,
+    },
 }
-
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    //println!("Logs from your program will appear here!");
 
     match args.command {
         Command::Init => {
@@ -45,13 +47,11 @@ fn main() -> anyhow::Result<()> {
             println!("Initialized git directory")
         }
         Command::CatFile {
-            pretty_print, 
+            pretty_print,
             object_hash,
-        } => commands::cat_file::invoke(pretty_print, &object_hash)?, 
-        Command::HashObject {
-            write, 
-            file,
-        } => commands::hash_object::invoke(write, &file)?,
+        } => commands::cat_file::invoke(pretty_print, &object_hash)?,
+        Command::HashObject { write, file } => commands::hash_object::invoke(write, &file)?,
+        Command::LsTree { name_only } => commands::ls_tree::invoke(name_only)?,
     }
     Ok(())
 }
